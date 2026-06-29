@@ -37,25 +37,3 @@ The baseline implementation uses a **Dynamic Array (`MainArray`)**.
 graph LR
     A[Incoming Transaction] -->|Append O1| B[(MainArray: Index 0, 1, 2... n)]
     C[Search Request] -->|Iterate On| B
-
-## Medium/Large-Scale System (10,000+ Transactions)
-
-At 10,000+ transactions, $O(n)$ operations like standard array searches cause noticeable lag. The system must utilize synchronized, advanced data structures to handle insertions, lookups, ranking, and range queries simultaneously.
-
-### Implementation Details
-The system upgrades from a single array to **four synchronized data structures**, each handling a specific operation optimally to prevent bottlenecks.
-
-```mermaid
-graph TD
-    A[Incoming Payment] --> B{Synchronizer Engine}
-    
-    B -->|Check Duplicates| C[HashSet O1]
-    B -->|Store Data| D[HashTable O1]
-    B -->|Order by Value| E[Priority Heap Ologn]
-    B -->|Order by Time| F[AVL Balanced Tree Ologn]
-
-    C -.->|Double Spending Prevented| A
-    
-    G[Search Request] --> D
-    H[Top Transactions Request] --> E
-    I[End-of-Day Report] --> F
